@@ -97,7 +97,6 @@
             bottom: 0;
             border-radius: 16px 16px 0 0;
             transition: height 2s ease-in-out;
-            height: 70.65%;
         }
 
         .progress-text {
@@ -243,57 +242,35 @@
             <div class="thermometer-bulb">
                 <span style="color: white; font-weight: bold; font-size: 1.2em;">🎉</span>
             </div>
-            <div class="milestone-markers">
-                <div class="milestone" style="bottom: 256px;">
-                    <div class="milestone-label">2000</div>
-                </div>
-                <div class="milestone" style="bottom: 192px;">
-                    <div class="milestone-label">1500</div>
-                </div>
-                <div class="milestone" style="bottom: 128px;">
-                    <div class="milestone-label">1000</div>
-                </div>
-                <div class="milestone" style="bottom: 64px;">
-                    <div class="milestone-label">500</div>
-                </div>
-                <div class="milestone" style="bottom: 0px;">
-                    <div class="milestone-label">0</div>
-                </div>
-            </div>
+            <div class="milestone-markers"></div>
         </div>
 
-        <div class="progress-text" id="progress-text">70.7% Complete!</div>
+        <div class="progress-text" id="progress-text">Progress</div>
         
         <div class="stats">
             <div class="stat">
-                <div class="stat-number" id="current-count">1,413</div>
+                <div class="stat-number" id="current-count">0</div>
                 <div class="stat-label">Current Shout Outs</div>
             </div>
             <div class="stat">
-                <div class="stat-number" id="remaining-count">587</div>
+                <div class="stat-number" id="remaining-count">0</div>
                 <div class="stat-label">To Go!</div>
             </div>
             <div class="stat">
-                <div class="stat-number">2,000</div>
+                <div class="stat-number" id="target-count">0</div>
                 <div class="stat-label">Target Goal</div>
             </div>
         </div>
 
-        <div class="celebration">
-            <span class="emoji">🔥</span>
-            Getting close! Only 587 more!
-            <span class="emoji">💪</span>
-        </div>
+        <div class="celebration"></div>
 
         <div class="encouragement">
-            You're amazing! Just <strong id="encouragement-count">587 more</strong> gratitude shout outs and you'll unlock your <strong>Fun Friday End of Term Celebration</strong>! You're so close!
+            You're amazing! Just <strong id="encouragement-count">0 more</strong> gratitude shout outs and you'll unlock your <strong>Fun Friday End of Term Celebration</strong>! You're so close!
             <span class="emoji">💪</span>
             <span class="emoji">❤️</span>
         </div>
 
-        <div class="last-updated">
-            Current count: 1,413 gratitude shout outs (70.7% complete!)
-        </div>
+        <div class="last-updated"></div>
 
         <div class="update-controls">
             <div class="upload-area">
@@ -333,7 +310,7 @@
     </div>
 
     <script>
-        let currentCount = 1508;
+        let currentCount = 1510;
         const target = 2000;
 
         function updateDisplay(count) {
@@ -341,22 +318,19 @@
             const progressPercent = Math.min(100, (count / target) * 100);
             const remaining = Math.max(0, target - count);
             
-            // Update all display elements
             document.getElementById('progress-text').textContent = `${progressPercent.toFixed(1)}% Complete!`;
             document.getElementById('current-count').textContent = count.toLocaleString();
             document.getElementById('remaining-count').textContent = remaining.toLocaleString();
+            document.getElementById('target-count').textContent = target.toLocaleString();
             document.getElementById('encouragement-count').textContent = `${remaining.toLocaleString()} more`;
             
-            // Update thermometer fill height
             document.getElementById('thermometer-fill').style.height = `${Math.max(5, progressPercent)}%`;
             
-            // Update timestamp
             const now = new Date();
             const timeString = now.toLocaleTimeString();
             const dateString = now.toLocaleDateString();
             document.querySelector('.last-updated').textContent = `Last updated: ${dateString} at ${timeString} - ${count.toLocaleString()} shout outs (${progressPercent.toFixed(1)}% complete!)`;
             
-            // Update celebration message
             const celebration = document.querySelector('.celebration');
             if (remaining <= 100) {
                 celebration.innerHTML = `<span class="emoji">🎉</span> SO CLOSE! Just ${remaining} more! <span class="emoji">🏁</span>`;
@@ -412,21 +386,42 @@
             }
         }
 
-        // Set up drag and drop
+        // Dynamic milestone generator
+        function generateMilestones(target) {
+            const container = document.querySelector('.milestone-markers');
+            container.innerHTML = '';
+            const step = 500; 
+            const tubeHeight = 320;
+
+            for (let value = 0; value <= target; value += step) {
+                const percent = value / target;
+                const bottom = percent * tubeHeight;
+
+                const milestone = document.createElement('div');
+                milestone.className = 'milestone';
+                milestone.style.bottom = `${bottom}px`;
+
+                const label = document.createElement('div');
+                label.className = 'milestone-label';
+                label.textContent = value.toLocaleString();
+
+                milestone.appendChild(label);
+                container.appendChild(milestone);
+            }
+        }
+
+        // Drag and drop for upload
         const uploadArea = document.querySelector('.update-controls');
-        
         uploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             this.style.background = '#f0f0f0';
             this.style.borderColor = '#e53e3e';
         });
-
         uploadArea.addEventListener('dragleave', function(e) {
             e.preventDefault();
             this.style.background = '#fafafa';
             this.style.borderColor = '#ddd';
         });
-
         uploadArea.addEventListener('drop', function(e) {
             e.preventDefault();
             this.style.background = '#fafafa';
@@ -438,8 +433,9 @@
             }
         });
 
-        // Initialize display
-        updateDisplay(1508);
+        // Initialise milestones + display
+        generateMilestones(target);
+        updateDisplay(1510);
     </script>
 </body>
 </html>
