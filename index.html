@@ -1,404 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gratitude Shout Outs Progress</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            border: 3px solid #000;
-        }
-
-        .school-header {
-            margin-bottom: 30px;
-        }
-
-        .school-name {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #000;
-            letter-spacing: 2px;
-        }
-
-        .title {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #e53e3e, #000000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subtitle {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .thermometer-container {
-            position: relative;
-            margin: 40px auto;
-            width: 80px;
-            height: 400px;
-        }
-
-        .thermometer-bulb {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #e53e3e, #ff4444);
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            border: 4px solid #000;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .thermometer-tube {
-            width: 40px;
-            height: 320px;
-            background: #f0f0f0;
-            border: 4px solid #000;
-            border-radius: 20px 20px 0 0;
-            position: absolute;
-            bottom: 60px;
-            left: 20px;
-            overflow: hidden;
-        }
-
-        .thermometer-fill {
-            width: 100%;
-            background: linear-gradient(to top, #e53e3e 0%, #ff4444 50%, #ff6666 100%);
-            position: absolute;
-            bottom: 0;
-            border-radius: 16px 16px 0 0;
-            transition: height 2s ease-in-out;
-        }
-
-        .progress-text {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #333;
-            margin: 20px 0;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #e53e3e;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .milestone-markers {
-            position: absolute;
-            right: -100px;
-            top: 0;
-            height: 320px;
-            width: 80px;
-        }
-
-        .milestone {
-            position: absolute;
-            right: 0;
-            width: 60px;
-            height: 2px;
-            background: #000;
-        }
-
-        .milestone-label {
-            position: absolute;
-            right: 70px;
-            font-size: 0.8em;
-            color: #000;
-            font-weight: bold;
-            top: -8px;
-        }
-
-        .celebration {
-            font-size: 1.3em;
-            color: #e53e3e;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .encouragement {
-            font-size: 1.1em;
-            color: #333;
-            margin-top: 15px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #e53e3e;
-        }
-
-        .last-updated {
-            margin-top: 15px;
-            font-size: 0.9em;
-            color: #28a745;
-        }
-
-        .update-controls {
-            margin-top: 25px;
-            padding: 20px;
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            background: #fafafa;
-        }
-
-        .upload-area {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            background: #e53e3e;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        button:hover {
-            background: #cc3333;
-        }
-
-        .emoji {
-            font-size: 1.2em;
-            margin: 0 5px;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gratitude Shout Outs Progress</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #000000 0%, #333333 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      border: 3px solid #000;
+    }
+    .school-header { margin-bottom: 30px; }
+    .school-name {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #000;
+      letter-spacing: 2px;
+    }
+    .title {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #e53e3e, #000000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 1.2em;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .thermometer-container {
+      position: relative;
+      margin: 40px auto;
+      width: 80px;
+      height: 400px;
+    }
+    .thermometer-bulb {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #e53e3e, #ff4444);
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      border: 4px solid #000;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .thermometer-tube {
+      width: 40px;
+      height: 320px;
+      background: #f0f0f0;
+      border: 4px solid #000;
+      border-radius: 20px 20px 0 0;
+      position: absolute;
+      bottom: 60px;
+      left: 20px;
+      overflow: hidden;
+    }
+    .thermometer-fill {
+      width: 100%;
+      background: linear-gradient(to top, #e53e3e 0%, #ff4444 50%, #ff6666 100%);
+      position: absolute;
+      bottom: 0;
+      border-radius: 16px 16px 0 0;
+      transition: height 2s ease-in-out;
+    }
+    .progress-text {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #333;
+      margin: 20px 0;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      color: #e53e3e;
+    }
+    .stat-label {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 5px;
+    }
+    .milestone-markers {
+      position: absolute;
+      right: -100px;
+      top: 0;
+      height: 320px;
+      width: 80px;
+    }
+    .milestone {
+      position: absolute;
+      right: 0;
+      width: 60px;
+      height: 2px;
+      background: #000;
+    }
+    .milestone-label {
+      position: absolute;
+      right: 70px;
+      font-size: 0.8em;
+      color: #000;
+      font-weight: bold;
+      top: -8px;
+    }
+    .celebration {
+      font-size: 1.3em;
+      color: #e53e3e;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .encouragement {
+      font-size: 1.1em;
+      color: #333;
+      margin-top: 15px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #e53e3e;
+    }
+    .last-updated {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #28a745;
+    }
+    .emoji { font-size: 1.2em; margin: 0 5px; }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .pulse { animation: pulse 2s infinite; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="school-header">
-            <div class="school-name">ARANDA PRIMARY SCHOOL</div>
-        </div>
-        
-        <div class="title">Gratitude Thermometer</div>
-        <div class="subtitle">Fun Friday End of Term Celebration!</div>
-        
-        <div class="thermometer-container">
-            <div class="thermometer-tube">
-                <div class="thermometer-fill pulse" id="thermometer-fill"></div>
-            </div>
-            <div class="thermometer-bulb">
-                <span style="color: white; font-weight: bold; font-size: 1.2em;">🎉</span>
-            </div>
-            <div class="milestone-markers"></div>
-        </div>
-
-        <div class="progress-text" id="progress-text">Progress</div>
-        
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-number" id="current-count">0</div>
-                <div class="stat-label">Current Shout Outs</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="remaining-count">0</div>
-                <div class="stat-label">To Go!</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="target-count">0</div>
-                <div class="stat-label">Target Goal</div>
-            </div>
-        </div>
-
-        <div class="celebration"></div>
-
-        <div class="encouragement">
-            You're amazing! Just <strong id="encouragement-count">0 more</strong> gratitude shout outs and you'll unlock your <strong>Fun Friday End of Term Celebration</strong>! You're so close!
-            <span class="emoji">💪</span>
-            <span class="emoji">❤️</span>
-        </div>
-
-        <div class="last-updated"></div>
-
-        <div class="update-controls">
-            <div class="upload-area">
-                <div style="font-size: 2em; margin-bottom: 10px;">📁</div>
-                <div style="font-weight: bold; margin-bottom: 8px;">Upload Updated Spreadsheet</div>
-                <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
-                    Click to browse or drag & drop your Excel file here
-                </div>
-                
-                <button onclick="document.getElementById('fileInput').click()">
-                    📤 Choose File
-                </button>
-                
-                <div id="upload-status" style="font-size: 0.9em; margin-top: 10px; min-height: 20px;">
-                    Ready to process your file
-                </div>
-            </div>
-        </div>
-
-        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleFileUpload(this.files[0])">
+  <div class="container">
+    <div class="school-header">
+      <div class="school-name">ARANDA PRIMARY SCHOOL</div>
     </div>
+    <div class="title">Gratitude Thermometer</div>
+    <div class="subtitle">Fun Friday End of Term Celebration!</div>
+    <div class="thermometer-container">
+      <div class="thermometer-tube">
+        <div class="thermometer-fill pulse" id="thermometer-fill"></div>
+      </div>
+      <div class="thermometer-bulb">
+        <span style="color: white; font-weight: bold; font-size: 1.2em;">🎉</span>
+      </div>
+      <div class="milestone-markers"></div>
+    </div>
+    <div class="progress-text" id="progress-text">Progress</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number" id="current-count">0</div>
+        <div class="stat-label">Current Shout Outs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="remaining-count">0</div>
+        <div class="stat-label">To Go!</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="target-count">0</div>
+        <div class="stat-label">Target Goal</div>
+      </div>
+    </div>
+    <div class="celebration"></div>
+    <div class="encouragement">
+      You're amazing! Just <strong id="encouragement-count">0 more</strong> gratitude shout outs and you'll unlock your <strong>Fun Friday End of Term Celebration</strong>! You're so close!
+      <span class="emoji">💪</span>
+      <span class="emoji">❤️</span>
+    </div>
+    <div class="last-updated"></div>
+  </div>
 
-    <script>
-        let currentCount = 1668;
-        const target = 2000;
+  <script>
+    let currentCount = 1668;
+    const target = 2000;
 
-        function updateDisplay(count) {
-            currentCount = count;
-            const progressPercent = Math.min(100, (count / target) * 100);
-            const remaining = Math.max(0, target - count);
-            
-            document.getElementById('progress-text').textContent = `${progressPercent.toFixed(1)}% Complete!`;
-            document.getElementById('current-count').textContent = count.toLocaleString();
-            document.getElementById('remaining-count').textContent = remaining.toLocaleString();
-            document.getElementById('target-count').textContent = target.toLocaleString();
-            document.getElementById('encouragement-count').textContent = `${remaining.toLocaleString()} more`;
-            
-            document.getElementById('thermometer-fill').style.height = `${Math.max(5, progressPercent)}%`;
-            
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            const dateString = now.toLocaleDateString();
-            document.querySelector('.last-updated').textContent = `Last updated: ${dateString} at ${timeString} - ${count.toLocaleString()} shout outs (${progressPercent.toFixed(1)}% complete!)`;
-            
-            const celebration = document.querySelector('.celebration');
-            if (remaining <= 100) {
-                celebration.innerHTML = `<span class="emoji">🎉</span> SO CLOSE! Just ${remaining} more! <span class="emoji">🏁</span>`;
-            } else if (remaining <= 300) {
-                celebration.innerHTML = `<span class="emoji">🔥</span> Getting close! Only ${remaining} more! <span class="emoji">💪</span>`;
-            } else {
-                celebration.innerHTML = `<span class="emoji">⭐</span> You're doing amazing! <span class="emoji">🌟</span>`;
-            }
-        }
+    function updateDisplay(count) {
+      currentCount = count;
+      const progressPercent = Math.min(100, (count / target) * 100);
+      const remaining = Math.max(0, target - count);
+      
+      document.getElementById('progress-text').textContent = `${progressPercent.toFixed(1)}% Complete!`;
+      document.getElementById('current-count').textContent = count.toLocaleString();
+      document.getElementById('remaining-count').textContent = remaining.toLocaleString();
+      document.getElementById('target-count').textContent = target.toLocaleString();
+      document.getElementById('encouragement-count').textContent = `${remaining.toLocaleString()} more`;
+      
+      document.getElementById('thermometer-fill').style.height = `${Math.max(5, progressPercent)}%`;
+      
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      const dateString = now.toLocaleDateString();
+      document.querySelector('.last-updated').textContent = 
+        `Last updated: ${dateString} at ${timeString} - ${count.toLocaleString()} shout outs (${progressPercent.toFixed(1)}% complete!)`;
+      
+      const celebration = document.querySelector('.celebration');
+      if (remaining <= 100) {
+        celebration.innerHTML = `<span class="emoji">🎉</span> SO CLOSE! Just ${remaining} more! <span class="emoji">🏁</span>`;
+      } else if (remaining <= 300) {
+        celebration.innerHTML = `<span class="emoji">🔥</span> Getting close! Only ${remaining} more! <span class="emoji">💪</span>`;
+      } else {
+        celebration.innerHTML = `<span class="emoji">⭐</span> You're doing amazing! <span class="emoji">🌟</span>`;
+      }
+    }
 
-        async function handleFileUpload(file) {
-            if (!file) return;
-            
-            try {
-                document.getElementById('upload-status').textContent = 'Processing file...';
-                document.getElementById('upload-status').style.color = '#666';
-                
-                const arrayBuffer = await file.arrayBuffer();
-                const workbook = XLSX.read(arrayBuffer);
-                
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                const actualEntries = jsonData.length;
-                
-                updateDisplay(actualEntries);
-                
-                document.getElementById('upload-status').textContent = `✅ File processed! Found ${actualEntries} gratitude shout outs`;
-                document.getElementById('upload-status').style.color = '#28a745';
-                
-                document.getElementById('fileInput').value = '';
-                
-            } catch (error) {
-                console.error('Error processing file:', error);
-                document.getElementById('upload-status').textContent = '❌ Error processing file. Please try again.';
-                document.getElementById('upload-status').style.color = '#dc3545';
-            }
-        }
+    function generateMilestones(target) {
+      const container = document.querySelector('.milestone-markers');
+      container.innerHTML = '';
+      const step = 500; 
+      const tubeHeight = 320;
 
-        // Dynamic milestone generator
-        function generateMilestones(target) {
-            const container = document.querySelector('.milestone-markers');
-            container.innerHTML = '';
-            const step = 500; 
-            const tubeHeight = 320;
+      for (let value = 0; value <= target; value += step) {
+        const percent = value / target;
+        const bottom = percent * tubeHeight;
 
-            for (let value = 0; value <= target; value += step) {
-                const percent = value / target;
-                const bottom = percent * tubeHeight;
+        const milestone = document.createElement('div');
+        milestone.className = 'milestone';
+        milestone.style.bottom = `${bottom}px`;
 
-                const milestone = document.createElement('div');
-                milestone.className = 'milestone';
-                milestone.style.bottom = `${bottom}px`;
+        const label = document.createElement('div');
+        label.className = 'milestone-label';
+        label.textContent = value.toLocaleString();
 
-                const label = document.createElement('div');
-                label.className = 'milestone-label';
-                label.textContent = value.toLocaleString();
+        milestone.appendChild(label);
+        container.appendChild(milestone);
+      }
+    }
 
-                milestone.appendChild(label);
-                container.appendChild(milestone);
-            }
-        }
-
-        // Drag and drop for upload
-        const uploadArea = document.querySelector('.update-controls');
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.style.background = '#f0f0f0';
-            this.style.borderColor = '#e53e3e';
-        });
-        uploadArea.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.style.background = '#fafafa';
-            this.style.borderColor = '#ddd';
-        });
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.style.background = '#fafafa';
-            this.style.borderColor = '#ddd';
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFileUpload(files[0]);
-            }
-        });
-
-        // Initialise milestones + display
-        generateMilestones(target);
-        updateDisplay(1668);
-    </script>
+    // Initialise
+    generateMilestones(target);
+    updateDisplay(currentCount);
+  </script>
 </body>
 </html>
