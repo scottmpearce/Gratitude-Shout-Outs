@@ -205,11 +205,6 @@
             background: #cc3333;
         }
 
-        .quick-add {
-            padding: 8px 12px;
-            font-size: 0.9em;
-        }
-
         .emoji {
             font-size: 1.2em;
             margin: 0 5px;
@@ -288,29 +283,13 @@
                     Ready to process your file
                 </div>
             </div>
-
-            <div style="border-top: 1px solid #ddd; padding-top: 15px;">
-                <div style="font-weight: bold; margin-bottom: 10px;">Manual Updates (Temporary):</div>
-                <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">
-                    ⚠️ Manual updates reset when page refreshes. Use file upload for permanent updates.
-                </div>
-                <button onclick="manualUpdate()">📝 Enter Count</button>
-                
-                <div style="margin-top: 10px;">
-                    <div style="font-size: 0.9em; color: #666; margin-bottom: 8px;">Quick add:</div>
-                    <button class="quick-add" onclick="quickAdd(10)">+10</button>
-                    <button class="quick-add" onclick="quickAdd(25)">+25</button>
-                    <button class="quick-add" onclick="quickAdd(50)">+50</button>
-                    <button class="quick-add" onclick="quickAdd(100)">+100</button>
-                </div>
-            </div>
         </div>
 
         <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleFileUpload(this.files[0])">
     </div>
 
     <script>
-        let currentCount = 1561;
+        let currentCount = 1668;
         const target = 2000;
 
         function updateDisplay(count) {
@@ -339,22 +318,6 @@
             } else {
                 celebration.innerHTML = `<span class="emoji">⭐</span> You're doing amazing! <span class="emoji">🌟</span>`;
             }
-        }
-
-        function manualUpdate() {
-            const input = prompt(`Enter the current number of Gratitude Shout Outs:\n\n(Current: ${currentCount})`);
-            if (input !== null && input.trim() !== '') {
-                const newCount = parseInt(input.trim());
-                if (!isNaN(newCount) && newCount >= 0) {
-                    updateDisplay(newCount);
-                } else {
-                    alert('Please enter a valid number.');
-                }
-            }
-        }
-
-        function quickAdd(amount) {
-            updateDisplay(currentCount + amount);
         }
 
         async function handleFileUpload(file) {
@@ -435,7 +398,7 @@
 
         // Initialise milestones + display
         generateMilestones(target);
-        updateDisplay(1561);
+        updateDisplay(1668);
     </script>
 </body>
 </html>
